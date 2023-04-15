@@ -1,11 +1,11 @@
 from typing import Optional, Type
 
-from sqlalchemy import Boolean
 from sqlalchemy import BIGINT
+from sqlalchemy import Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.orm import Session
 
-from db_base import Base, engine
+from config.db_base import Base, engine
 
 
 class User(Base):
@@ -27,3 +27,10 @@ def add_user(user: User) -> Type[User]:
 def get_user(user_id: int) -> Optional[User]:
     with Session(engine) as session:
         return session.get(User, user_id)
+
+
+def mark_user_as_tried(user_id: int):
+    with Session(engine) as session:
+        user = session.get(User, user_id)
+        user.tried = True
+        session.commit()

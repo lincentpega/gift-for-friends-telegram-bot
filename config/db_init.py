@@ -1,4 +1,4 @@
-from db_base import Base, engine
+from config.db_base import Base, engine
 
 
 def init_db():

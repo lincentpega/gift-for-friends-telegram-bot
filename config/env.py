@@ -11,3 +11,4 @@ db_port = os.getenv('DB_PORT')
 db_name = os.getenv('DB_NAME')
 
 bot_token = os.getenv('BOT_TOKEN')
+provider_token = os.getenv('PROVIDER_TOKEN')
