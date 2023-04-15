@@ -117,6 +117,11 @@ async def handle_correct_email(message: types.Message, state: FSMContext):
                                reply_markup=kb.approve_email_kb)
 
 
+@dp.message_handler(lambda message: not is_email_valid(message.text), state=Form.email)
+async def handle_incorrect_email(message: types.Message):
+    await bot.send_message(message.chat.id, 'Почта неверная, введите ещё раз')
+
+
 @dp.callback_query_handler(lambda c: c.data == 'change_email', state=Form.approve_email)
 async def handle_change_email(callback: types.CallbackQuery):
     await Form.email.set()
@@ -129,7 +134,7 @@ async def handle_right_email(callback: types.CallbackQuery, state: FSMContext):
     user = get_user(callback.from_user.id)
     if user.is_tried():
         await bot.send_message(callback.message.chat.id, 'Подарок 🎁- мы также вышлем тебе рекомендации '
-                                                'о том как упаковать и преподносить подарок.')
+                                                         'о том как упаковать и преподносить подарок.')
         return await bot.send_invoice(callback.message.chat.id, title='Рекомендации по подарку',
                                       description='Получи персональные рекомендации по подарку',
                                       provider_token=provider_token,
@@ -143,12 +148,6 @@ async def handle_right_email(callback: types.CallbackQuery, state: FSMContext):
                                   'Подарок 🎁- мы также вышлем тебе рекомендации '
                                   'о том как упаковать и преподносить подарок.\n'
                                   'Результаты опроса придут тебе на указанную почту в течении двух часов.')
-
-
-@dp.message_handler(state=Form.approve_email)
-@dp.message_handler(lambda message: not is_email_valid(message.text), state=Form.email)
-async def handle_incorrect_email(message: types.Message):
-    await bot.send_message(message.chat.id, 'Почта неверная, введите ещё раз')
 
 
 @dp.pre_checkout_query_handler(lambda query: True, state=Form.payment)
@@ -166,7 +165,7 @@ async def got_payment(message: types.Message, state: FSMContext):
 
 
 def is_email_valid(email: str) -> int:
-    return email.find('@')
+    return email.find('@') != -1
 
 
 async def load_data(state: FSMContext):
