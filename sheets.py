@@ -10,7 +10,7 @@ from googleapiclient.errors import HttpError
 
 log = logging.getLogger(__name__)
 
-SPREADSHEET_ID = '1PC--vmwgtMrL_pxM_J24_yKE51mwGJoZVmuutqXAI_c'
+SPREADSHEET_ID = '1FvZHi5mxCPrCv9IBQkeMj17195eKCW3IyJBVqiZLHhE'
 RANGE_NAME = 'Sheet1!A2:H'
 VALUE_INPUT_OPTIONS = 'USER_ENTERED'
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
@@ -65,3 +65,7 @@ def append_to_table(email: str, username: str, is_payed: bool, occasion: str, gi
     except HttpError as err:
         log.error(err)
         return err
+
+
+if __name__ == '__main__':
+    auth()
